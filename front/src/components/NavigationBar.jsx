@@ -1,8 +1,8 @@
 
-import React from 'react';
+import React, {useState} from 'react';
 import { Navbar, Nav } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faUser, faBars } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import BackendService from '../services/BackendService';
@@ -35,15 +35,19 @@ class NavigationBarClass extends React.Component {
     render() {
         return (
             <Navbar bg="light" expand="lg">
-                <Navbar.Brand><FontAwesomeIcon icon={faHome} />{' '}My RPO</Navbar.Brand>
-                <Navbar.Brand>myRPO</Navbar.Brand>
+             <button type="button"
+                        className="btn btn-outline-secondary mr-2"
+                        onClick={this.props.toggleSideBar}>
+                    <FontAwesomeIcon icon={ faBars} />
+                </button>
+                <Navbar.Brand>My RPO</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ms-auto">
                         {/*<Nav.Link href="/home">Home</Nav.Link>*/}
                         <Nav.Link as={Link} to="/home">Home</Nav.Link>
                         <Nav.Link onClick={this.goHome}>Another home</Nav.Link>
-                        <Nav.Link onClick={() => { this.props.history.push("/home")}} >Yet another home</Nav.Link>
+                        <Nav.Link onClick={() => { this.props.navigate("/home")}} >Yet another home</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
                 <Navbar.Text>{this.props.user && this.props.user.login}</Navbar.Text>
