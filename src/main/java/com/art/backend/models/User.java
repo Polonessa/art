@@ -23,8 +23,10 @@ public class User {
     @Column(name = "password", nullable = false)
     public String password;
 
-   // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "salt", updatable = false, nullable = false)
+    @Transient
+    public String np;
+
+    @Column(name = "salt")
     public String salt;
 
     @Column(name = "token")

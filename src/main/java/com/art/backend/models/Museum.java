@@ -29,7 +29,7 @@ public class Museum {
     public String location;
 
     @JsonIgnore
-    @OneToMany
+    @OneToMany (mappedBy = "museumid")
     public List<Painting>
             paintings = new ArrayList<>();
 

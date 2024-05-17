@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "artists")
+@Table(name = "artists", uniqueConstraints={@UniqueConstraint(columnNames={"name"})})
 @Access(AccessType.FIELD)
 public class Artist {
     public Artist() { }
@@ -20,7 +20,7 @@ public class Artist {
     @Column(name = "id", updatable = false, nullable = false)
     public long id;
 
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false, unique = true, length = 32)
     public String name;
 
     @Column(name = "age", nullable = false)

@@ -5,6 +5,9 @@ import com.art.backend.models.Country;
 import com.art.backend.repositories.CountryRepository;
 import com.art.backend.tools.DataValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -13,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping(value = "/api/v1", produces = "application/json")
 public class CountryController  {
@@ -20,9 +24,8 @@ public class CountryController  {
     CountryRepository countryRepository;
 
     @GetMapping("/countries")
-    public List
-    getAllCountries() {
-        return countryRepository.findAll();
+    public Page<Country> getAllCountries(@RequestParam("page") int page, @RequestParam("limit") int limit) {
+        return countryRepository.findAll(PageRequest.of(page, limit, Sort.by(Sort.Direction.ASC, "name")));
     }
     @PostMapping("/countries")
     public ResponseEntity<Object>
@@ -33,7 +36,6 @@ public class CountryController  {
             return new ResponseEntity<Object>(nc, HttpStatus.OK);
         }
         catch(Exception ex) {
-            String error;
             if (ex.getMessage().contains("countries.name_UNIQUE"))
                 throw new DataValidationException("Эта страна уже есть в базе");
             else
@@ -61,7 +63,6 @@ public class CountryController  {
             return ResponseEntity.ok(country);
         }
         catch (Exception ex) {
-            String error;
             if (ex.getMessage().contains("countries.name_UNIQUE"))
                 throw new DataValidationException("Эта страна уже есть в базе");
             else

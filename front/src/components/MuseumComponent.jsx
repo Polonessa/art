@@ -5,15 +5,20 @@ import{faChevronLeft, faSave} from "@fortawesome/free-solid-svg-icons";
 import {Form} from "react-bootstrap";
 import { useParams, useNavigate } from 'react-router-dom';
 
-const CountryComponent = props => {
+const MuseumComponent = props => {
 
     const [hidden, setHidden] = useState(false);
     const navigate = useNavigate();
     const [name, setName] = useState("")
+    const [location, setLocation] = useState()
     const [id, setId] = useState(useParams().id)
 
     const updateName = (event) => {
         setName(event.target.value)
+    }
+
+    const updateLocation = (event) => {
+        setLocation(event.target.value)
     }
 
     const onSubmit = (event) => {
@@ -21,28 +26,28 @@ const CountryComponent = props => {
         event.stopPropagation();
         let err = null;
         if (name === ""){
-            err = "Название страны должно быть указано"
+            err = "Название должно быть указано"
         }
-        let country = {name: name, id: id}
+        let Museum = {name: name, id: id, location: location}
         if (parseInt(id) == -1) {
-            BackendService.createCountry(country)
+            BackendService.createMuseum(Museum)
                 .then(resp => {
                 console.log(resp.data);
-                navigate("/countries")})
+                navigate("/museums")})
                 .catch(err =>{})
         }
         else {
-            BackendService.updateCountry(country)
+            BackendService.updateMuseum(Museum)
                 .then(resp => {
                 console.log(resp.data);
-                navigate("/countries")})
+                navigate("/museums")})
                 .catch(err =>{})
         }
 
     }
 
-    const navigateToCountries = () => {
-        navigate('/countries')
+    const navigateToMuseums = () => {
+        navigate('/museums')
     }
 
     if (hidden)
@@ -50,21 +55,28 @@ const CountryComponent = props => {
     return (
         <div className="m-4">
             <div className="row my-2 mr-0">
-                <h3>Данные страны</h3>
+                <h3>Данные музея</h3>
                 <button
                     className="btn btn-outline-secondary ml-auto"
-                    onClick={()=>  navigateToCountries() }><FontAwesomeIcon
+                    onClick={()=>  navigateToMuseums() }><FontAwesomeIcon
                     icon={faChevronLeft}/>{' '}Назад</button>
             </div>
             <Form className="form-list" onSubmit={onSubmit}>
                 <Form.Group>
                     <Form.Control
                         type="text"
-                        placeholder="Введите название страны"
+                        placeholder="Введите название музея"
                         onChange={updateName}
                         value={name}
                         name="name"
                         autoComplete="off"/>
+                        <Form.Control
+                            type="text"
+                            placeholder="Введите местоположение музея"
+                            onChange={updateLocation}
+                            value={location}
+                            name="name"
+                            autoComplete="off"/>
                 </Form.Group>
                 <button
                     className="btn btn-outline-secondary"
@@ -76,4 +88,4 @@ const CountryComponent = props => {
 
 }
 
-export default CountryComponent;
+export default MuseumComponent;
